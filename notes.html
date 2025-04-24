@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes | AI Student Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base styles same as dashboard */
+        :root {
+            --primary: #1A237E;
+            --secondary: #E3F2FD;
+            --accent: #FF7043;
+            --bg: #FAFAFA;
+            --text: #212121;
+            --sidebar: #0d1a73;
+        }
+        
+        /* Shared styles from dashboard */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background-color: var(--sidebar);
+            color: white;
+            padding: 30px 0;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        .main-content {
+            padding: 40px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* Notes Page Specific Styles */
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 16px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+        
+        .new-note-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        
+        .new-note-btn:hover {
+            background-color: #f45c2c;
+        }
+        
+        .new-note-btn i {
+            margin-right: 8px;
+        }
+        
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .note-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .note-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        
+        .note-content {
+    color: #666;
+    flex: 1;
+    margin-bottom: 16px;
+    
+    /* Standard property for future compatibility */
+    line-clamp: 5;
+    
+    /* WebKit browsers (Chrome, Safari, Edge) */
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+    
+    /* Firefox support */
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    
+    /* Modern browsers */
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    /* Fallback properties */
+    max-height: 7.5em; /* 5 lines * 1.5em line-height (adjust as needed) */
+    line-height: 1.5em;
+}
+        
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .note-actions a {
+            color: var(--primary);
+            margin-left: 12px;
+            text-decoration: none;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #666;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state p {
+            color: #999;
+            margin-bottom: 24px;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .tag {
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation (same as dashboard) -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="../logo-white.svg" alt="AI Student Helper">
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="./" class="nav-link active">
+                    <i class="fas fa-book"></i>
+                    <span>My Notes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../chatbot/" class="nav-link">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../courses/" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../calendar/" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Calendar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../profile/" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title">My Notes</h1>
+            <div class="user-profile">
+                <div class="user-avatar">KM</div>
+                <span>Kabir Malik</span>
+            </div>
+        </div>
+
+        <div class="notes-header">
+            <div class="search-bar">
+                <input type="text" placeholder="Search notes...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <button class="new-note-btn" onclick="location.href='new.html'">
+                <i class="fas fa-plus"></i> New Note
+            </button>
+        </div>
+
+        <div class="notes-container">
+            <div class="note-card">
+                <h3 class="note-title">Machine Learning Algorithms</h3>
+                <div class="tags">
+                    <span class="tag">AI</span>
+                    <span class="tag">ML</span>
+                    <span class="tag">CSE302</span>
+                </div>
+                <p class="note-content">
+                    There are three main types of machine learning algorithms: supervised learning, unsupervised learning, and reinforcement learning. Supervised learning uses labeled data to train models, unsupervised learning finds patterns in unlabeled data, and reinforcement learning uses a reward system to train models.
+                </p>
+                <div class="note-footer">
+                    <span>Last updated: 2 days ago</span>
+                    <div class="note-actions">
+                        <a href="1.html"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <h3 class="note-title">Python Data Structures</h3>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">CSE101</span>
+                </div>
+                <p class="note-content">
+                    Python has several built-in data structures: lists (mutable sequences), tuples (immutable sequences), dictionaries (key-value pairs), and sets (unordered collections of unique elements). Each has specific use cases and performance characteristics that make them suitable for different scenarios.
+                </p>
+                <div class="note-footer">
+                    <span>Last updated: 1 week ago</span>
+                    <div class="note-actions">
+                        <a href="2.html"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <h3 class="note-title">Neural Network Architectures</h3>
+                <div class="tags">
+                    <span class="tag">Deep Learning</span>
+                    <span class="tag">AI</span>
+                    <span class="tag">CSE405</span>
+                </div>
+                <p class="note-content">
+                    Common neural network architectures include feedforward networks (basic structure), convolutional neural networks (CNNs) for image processing, recurrent neural networks (RNNs) for sequence data, and transformers for natural language processing. Each architecture is designed to handle specific types of data and learning tasks.
+                </p>
+                <div class="note-footer">
+                    <span>Last updated: 3 weeks ago</span>
+                    <div class="note-actions">
+                        <a href="3.html"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <h3 class="note-title">Database Design Principles</h3>
+                <div class="tags">
+                    <span class="tag">Database</span>
+                    <span class="tag">CSE203</span>
+                </div>
+                <p class="note-content">
+                    Key database design principles include normalization (to reduce redundancy), proper indexing (to improve query performance), ACID properties (Atomicity, Consistency, Isolation, Durability for transactions), and considering the CAP theorem (Consistency, Availability, Partition tolerance) for distributed systems.
+                </p>
+                <div class="note-footer">
+                    <span>Last updated: 1 month ago</span>
+                    <div class="note-actions">
+                        <a href="4.html"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

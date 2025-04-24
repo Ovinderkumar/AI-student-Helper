@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AI Student Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1A237E;
+            --secondary: #E3F2FD;
+            --accent: #FF7043;
+            --bg: #FAFAFA;
+            --text: #212121;
+            --sidebar: #0d1a73;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--sidebar);
+            color: white;
+            padding: 30px 0;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo img {
+            width: 120px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 8px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 40px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Dashboard Widgets */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .widget {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .widget-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .widget-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        
+        .widget-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .widget-description {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Recent Notes Section */
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .note-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .note-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .note-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        
+        .note-excerpt {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 16px;
+    
+    /* Standard property (not widely supported yet) */
+    line-clamp: 3;
+    
+    /* WebKit browsers (Chrome, Safari) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+    
+    /* Firefox */
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    
+    /* Modern browsers */
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+        
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .note-actions a {
+            color: var(--primary);
+            margin-left: 12px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="logo-white.svg" alt="AI Student Helper">
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="notes/" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>My Notes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="chatbot/" class="nav-link">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="courses/" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="calendar/" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Calendar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="profile/" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title">Dashboard</h1>
+            <div class="user-profile">
+                <div class="user-avatar">KM</div>
+                <span>Aryan Jawla</span>
+            </div>
+        </div>
+
+        <!-- Dashboard Widgets -->
+        <div class="dashboard-grid">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">My Notes</h3>
+                    <div class="widget-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+                <div class="widget-value">24</div>
+                <p class="widget-description">Notes created this semester</p>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">AI Queries</h3>
+                    <div class="widget-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                </div>
+                <div class="widget-value">56</div>
+                <p class="widget-description">Questions asked this month</p>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 class="widget-title">Upcoming</h3>
+                    <div class="widget-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="widget-value">3</div>
+                <p class="widget-description">Deadlines this week</p>
+            </div>
+        </div>
+
+        <!-- Recent Notes Section -->
+        <h2 class="section-title">Recent Notes</h2>
+        <div class="notes-grid">
+            <div class="note-card">
+                <h3 class="note-title">Machine Learning Basics</h3>
+                <p class="note-excerpt">Supervised learning involves training a model on labeled data, where the correct answers are provided. The model makes predictions and is corrected by the training data until it achieves an acceptable level of performance.</p>
+                <div class="note-meta">
+                    <span>Created: 2 days ago</span>
+                    <div class="note-actions">
+                        <a href="#"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <h3 class="note-title">Python Data Structures</h3>
+                <p class="note-excerpt">Lists are mutable sequences, typically used to store collections of homogeneous items. Tuples are immutable sequences, typically used to store collections of heterogeneous data. Sets are unordered collections of unique elements.</p>
+                <div class="note-meta">
+                    <span>Created: 1 week ago</span>
+                    <div class="note-actions">
+                        <a href="#"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <h3 class="note-title">Neural Networks</h3>
+                <p class="note-excerpt">A neural network is a series of algorithms that endeavors to recognize underlying relationships in a set of data through a process that mimics the way the human brain operates. In this sense, neural networks refer to systems of neurons...</p>
+                <div class="note-meta">
+                    <span>Created: 2 weeks ago</span>
+                    <div class="note-actions">
+                        <a href="#"><i class="fas fa-edit"></i></a>
+                        <a href="#"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

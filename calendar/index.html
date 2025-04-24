@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar | AI Student Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <style>
+        :root {
+            --primary: #1A237E;
+            --secondary: #E3F2FD;
+            --accent: #FF7043;
+            --bg: #FAFAFA;
+            --text: #212121;
+            --sidebar: #0d1a73;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        /* Sidebar (same as dashboard) */
+        .sidebar {
+            background-color: var(--sidebar);
+            color: white;
+            padding: 30px 0;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo img {
+            width: 120px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 8px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Calendar Styles */
+        .calendar-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        #calendar {
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .fc-toolbar-title {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+        }
+        
+        .fc-button {
+            background-color: var(--primary) !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 8px !important;
+        }
+        
+        .fc-button:hover {
+            background-color: #0d1a73 !important;
+        }
+        
+        .fc-event {
+            background-color: var(--accent) !important;
+            border: none !important;
+            padding: 4px 8px !important;
+            border-radius: 4px !important;
+        }
+        
+        .fc-daygrid-event-dot {
+            border-color: var(--accent) !important;
+        }
+        
+        .fc-day-today {
+            background-color: var(--secondary) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="../logo-white.svg" alt="AI Student Helper">
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../notes/" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>My Notes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../chatbot/" class="nav-link">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../courses/" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="./" class="nav-link active">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Calendar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../profile/" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title">Calendar</h1>
+            <div class="user-profile">
+                <div class="user-avatar">KM</div>
+                <span>Kabir Malik</span>
+            </div>
+        </div>
+
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
+    </main>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'Machine Learning Lecture',
+                        start: new Date().toISOString().split('T')[0] + 'T10:00:00',
+                        end: new Date().toISOString().split('T')[0] + 'T12:00:00'
+                    },
+                    {
+                        title: 'AI Project Deadline',
+                        start: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0]
+                    },
+                    {
+                        title: 'Study Group',
+                        start: new Date(Date.now() + 86400000 * 5).toISOString().split('T')[0] + 'T15:00:00',
+                        end: new Date(Date.now() + 86400000 * 5).toISOString().split('T')[0] + 'T17:00:00'
+                    }
+                ],
+                eventColor: '#FF7043',
+                eventTextColor: '#FFFFFF'
+            });
+            calendar.render();
+        });
+    </script>
+</body>
+</html>
